@@ -14,15 +14,19 @@ public class PlayerScript : MonoBehaviour {
     public GameObject pieceQueen;
     public GameObject pieceRook;
 
+    Vector2 pos = new Vector2(0, 0);
+
     // called on initialization
     void Start() {
-        ChangePiece(PieceType.Rook);
+        ChangePiece(PieceType.Knight);
     }
 
     void ChangePiece(PieceType piece) {
         foreach (Transform child in transform) {
             Destroy(child);
         }
+
+        pieceType = piece;
 
         GameObject pieceObj;
         switch (piece) {
@@ -43,11 +47,42 @@ public class PlayerScript : MonoBehaviour {
 
     // returns whether the move was successful
     public bool MoveTo(Vector2 movePos) {
-        var pos = transform.position;
-        pos.x = movePos.x;
-        pos.z = movePos.y;
-        transform.position = pos;
-        return true; // TODO
+        if (CanMove(movePos)) {
+            Vector3 oldPos = transform.position;
+            oldPos.x = movePos.x;
+            oldPos.z = movePos.y;
+            transform.position = oldPos;
+            pos = movePos;
+            return true;
+        } else return false;
+    }
+
+    bool CanMove(Vector2 movePos) {
+        int dx = Mathf.RoundToInt(movePos.x - pos.x),
+            dy = Mathf.RoundToInt(movePos.y - pos.y);
+        int adx = Mathf.Abs(dx), ady = Mathf.Abs(dy);
+
+        switch (pieceType) {
+        case PieceType.Bishop:
+            // TODO
+            return false;
+        case PieceType.King:
+            // TODO
+            return false;
+        case PieceType.Knight:
+            return adx + ady == 3 && (adx == 1 || adx == 2);
+        case PieceType.Pawn:
+            // TODO
+            return false;
+        case PieceType.Queen:
+            // TODO
+            return false;
+        case PieceType.Rook:
+            // TODO
+            return false;
+        }
+
+        return false; //unreachable
     }
 
 }
