@@ -2,7 +2,7 @@
 
 public class PlayerScript : MonoBehaviour {
 
-    enum PieceType {
+    public enum PieceType {
         Bishop, King, Knight, Pawn, Queen, Rook
     }
 
@@ -21,9 +21,9 @@ public class PlayerScript : MonoBehaviour {
         ChangePiece(PieceType.Knight);
     }
 
-    void ChangePiece(PieceType piece) {
+    public void ChangePiece(PieceType piece) {
         foreach (Transform child in transform) {
-            Destroy(child);
+            Destroy(child.gameObject);
         }
 
         pieceType = piece;
