@@ -37,9 +37,6 @@ public class BoardGenerator : MonoBehaviour {
                 Vector3 pos = new Vector3(x.idx, 0, y.idx);
 
                 switch (y.tile) {
-                case Tile.Empty:
-                    // nop
-                    break;
                 case Tile.Square:
                     tile = (GameObject) Instantiate(tileSquare, pos, Quaternion.identity);
                     break;
@@ -49,7 +46,11 @@ public class BoardGenerator : MonoBehaviour {
                 case Tile.End:
                     tile = (GameObject) Instantiate(tileEnd, pos, Quaternion.identity);
                     break;
+                default:
+                    continue;
                 }
+
+                tile.GetComponent<TileBehavior>().SetPosition(x.idx, y.idx);
 
             }
         }
