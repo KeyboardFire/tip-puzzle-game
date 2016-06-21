@@ -2,22 +2,43 @@
 
 public class PlayerScript : MonoBehaviour {
 
+    enum PieceType {
+        Bishop, King, Knight, Pawn, Queen, Rook
+    }
+
+    PieceType pieceType;
+    public GameObject pieceBishop;
+    public GameObject pieceKing;
+    public GameObject pieceKnight;
+    public GameObject piecePawn;
+    public GameObject pieceQueen;
     public GameObject pieceRook;
 
     // called on initialization
     void Start() {
-        ChangePiece(pieceRook);
+        ChangePiece(PieceType.Rook);
     }
 
-    void ChangePiece(GameObject piece) {
+    void ChangePiece(PieceType piece) {
         foreach (Transform child in transform) {
             Destroy(child);
         }
 
-        GameObject pieceObj = (GameObject) Instantiate(piece);
+        GameObject pieceObj;
+        switch (piece) {
+        case PieceType.Bishop: pieceObj = Instantiate(pieceBishop); break;
+        case PieceType.King:   pieceObj = Instantiate(pieceKing);   break;
+        case PieceType.Knight: pieceObj = Instantiate(pieceKnight); break;
+        case PieceType.Pawn:   pieceObj = Instantiate(piecePawn);   break;
+        case PieceType.Queen:  pieceObj = Instantiate(pieceQueen);  break;
+        case PieceType.Rook:   pieceObj = Instantiate(pieceRook);   break;
+        default: return; // unreachable
+        }
+
         pieceObj.transform.parent = transform;
         pieceObj.transform.localScale = transform.localScale;
-        pieceObj.transform.Translate(0, Util.ChildrenBounds(pieceObj.transform).extents.y, 0);
+        pieceObj.transform.Translate(0, Util.ChildrenBounds(pieceObj.transform)
+                .extents.y, 0);
     }
 
     // returns whether the move was successful
