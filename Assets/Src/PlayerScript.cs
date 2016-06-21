@@ -39,10 +39,13 @@ public class PlayerScript : MonoBehaviour {
         default: return; // unreachable
         }
 
+        // add the piece as a child and scale it accordingly
         pieceObj.transform.parent = transform;
         pieceObj.transform.localScale = transform.localScale;
-        pieceObj.transform.Translate(0, Util.ChildrenBounds(pieceObj.transform)
-                .extents.y, 0);
+
+        // place the bottom of the piece on the board
+        Bounds bounds = Util.ChildrenBounds(pieceObj.transform);
+        pieceObj.transform.Translate(0, bounds.extents.y - bounds.center.y, 0);
     }
 
     // returns whether the move was successful

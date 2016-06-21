@@ -3,15 +3,11 @@ using UnityEngine;
 public class Util {
 
     public static Bounds ChildrenBounds(Transform obj) {
-        Bounds? bounds = null;
+        Bounds bounds = new Bounds(Vector3.zero, Vector3.zero);
         foreach (Transform child in obj) {
-            if (bounds.HasValue) {
-                bounds.Value.Encapsulate(child.GetComponent<Renderer>().bounds);
-            } else {
-                bounds = child.GetComponent<Renderer>().bounds;
-            }
+            bounds.Encapsulate(child.GetComponent<Renderer>().bounds);
         }
-        return bounds.Value;
+        return bounds;
     }
 
 }
