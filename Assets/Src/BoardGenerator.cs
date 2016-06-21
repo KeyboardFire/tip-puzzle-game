@@ -11,6 +11,8 @@ public class BoardGenerator : MonoBehaviour {
     public GameObject tileStart;
     public GameObject tileEnd;
 
+    public Material lightSquareMat;
+
     // called on initialization
     void Start() {
 
@@ -39,6 +41,9 @@ public class BoardGenerator : MonoBehaviour {
                 switch (y.tile) {
                 case Tile.Square:
                     tile = (GameObject) Instantiate(tileSquare, pos, Quaternion.identity);
+                    if ((x.idx + y.idx) % 2 == 0) {
+                        tile.GetComponent<Renderer>().material = lightSquareMat;
+                    }
                     break;
                 case Tile.Start:
                     tile = (GameObject) Instantiate(tileStart, pos, Quaternion.identity);
