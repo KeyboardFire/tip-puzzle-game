@@ -30,12 +30,12 @@ public class PlayerScript : MonoBehaviour {
 
         GameObject pieceObj;
         switch (piece) {
-        case PieceType.Bishop: pieceObj = Instantiate(pieceBishop); break;
-        case PieceType.King:   pieceObj = Instantiate(pieceKing);   break;
-        case PieceType.Knight: pieceObj = Instantiate(pieceKnight); break;
-        case PieceType.Pawn:   pieceObj = Instantiate(piecePawn);   break;
-        case PieceType.Queen:  pieceObj = Instantiate(pieceQueen);  break;
-        case PieceType.Rook:   pieceObj = Instantiate(pieceRook);   break;
+        case PieceType.Bishop: pieceObj = (GameObject) Instantiate(pieceBishop, transform.position, transform.rotation); break;
+        case PieceType.King:   pieceObj = (GameObject) Instantiate(pieceKing, transform.position, transform.rotation);   break;
+        case PieceType.Knight: pieceObj = (GameObject) Instantiate(pieceKnight, transform.position, transform.rotation); break;
+        case PieceType.Pawn:   pieceObj = (GameObject) Instantiate(piecePawn, transform.position, transform.rotation);   break;
+        case PieceType.Queen:  pieceObj = (GameObject) Instantiate(pieceQueen, transform.position, transform.rotation);  break;
+        case PieceType.Rook:   pieceObj = (GameObject) Instantiate(pieceRook, transform.position, transform.rotation);   break;
         default: return; // unreachable
         }
 
@@ -51,13 +51,17 @@ public class PlayerScript : MonoBehaviour {
     // returns whether the move was successful
     public bool MoveTo(Vector2 movePos) {
         if (CanMove(movePos)) {
-            Vector3 oldPos = transform.position;
-            oldPos.x = movePos.x;
-            oldPos.z = movePos.y;
-            transform.position = oldPos;
-            pos = movePos;
+            ForceMove(movePos);
             return true;
         } else return false;
+    }
+
+    public void ForceMove(Vector2 movePos) {
+        Vector3 oldPos = transform.position;
+        oldPos.x = movePos.x;
+        oldPos.z = movePos.y;
+        transform.position = oldPos;
+        pos = movePos;
     }
 
     bool CanMove(Vector2 movePos) {

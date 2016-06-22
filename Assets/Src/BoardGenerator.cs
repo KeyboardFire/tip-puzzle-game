@@ -13,6 +13,8 @@ public class BoardGenerator : MonoBehaviour {
 
     public Material lightSquareMat;
 
+    public GameObject player;
+
     // called on initialization
     void Start() {
 
@@ -47,6 +49,7 @@ public class BoardGenerator : MonoBehaviour {
                     break;
                 case Tile.Start:
                     tile = (GameObject) Instantiate(tileStart, pos, Quaternion.identity);
+                    player.GetComponent<PlayerScript>().ForceMove(new Vector2(x.idx, y.idx));
                     break;
                 case Tile.End:
                     tile = (GameObject) Instantiate(tileEnd, pos, Quaternion.identity);
