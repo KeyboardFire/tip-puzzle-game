@@ -70,23 +70,41 @@ public class PlayerScript : MonoBehaviour {
         int adx = Mathf.Abs(dx), ady = Mathf.Abs(dy);
 
         switch (pieceType) {
-        case PieceType.Bishop:
-            // TODO
-            return false;
-        case PieceType.King:
-            // TODO
-            return false;
+
         case PieceType.Knight:
             return adx + ady == 3 && (adx == 1 || adx == 2);
+
         case PieceType.Pawn:
             return dx == 0 && (dy == 1 || dy == 2 &&
                     BoardGenerator.IsPassable(new Vector2(pos.x, pos.y + 1)));
+
         case PieceType.Queen:
-            // TODO
-            return false;
         case PieceType.Rook:
-            // TODO
-            return false;
+        case PieceType.Bishop:
+        case PieceType.King:
+            // make sure we're actually moving in a straight line
+            if (dx != 0 && dy != 0 && adx != ady) return false;
+
+            // now make sure there's nothing between the start and end squares
+            Vector2 testSquare = pos;
+            while (true) {
+                testSquare.x += System.Math.Sign(dx);
+                testSquare.y += System.Math.Sign(dy);
+
+                // test is exclusive on both ends (this is why we inf. loop)
+                if (testSquare == movePos) break;
+
+                if (!BoardGenerator.IsPassable(testSquare)) return false;
+            }
+
+            // finally, check direction for bishop/rook and distance for king
+            if (pieceType == PieceType.Rook   && (dx != 0 && dy != 0)) return false;
+            if (pieceType == PieceType.Bishop && (dx == 0 || dy == 0)) return false;
+            if (pieceType == PieceType.King   && (adx > 1 || ady > 1)) return false;
+
+            // all checks pass!
+            return true;
+
         }
 
         return false; //unreachable
