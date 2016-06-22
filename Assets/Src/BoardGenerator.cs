@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 public class BoardGenerator : MonoBehaviour {
 
@@ -14,6 +15,8 @@ public class BoardGenerator : MonoBehaviour {
     public Material lightSquareMat;
 
     public GameObject player;
+
+    static List<Vector2> passable = new List<Vector2>();
 
     // called on initialization
     void Start() {
@@ -46,13 +49,16 @@ public class BoardGenerator : MonoBehaviour {
                     if ((x.idx + y.idx) % 2 == 0) {
                         tile.GetComponent<Renderer>().material = lightSquareMat;
                     }
+                    passable.Add(new Vector2(x.idx, y.idx));
                     break;
                 case Tile.Start:
                     tile = (GameObject) Instantiate(tileStart, pos, Quaternion.identity);
                     player.GetComponent<PlayerScript>().ForceMove(new Vector2(x.idx, y.idx));
+                    passable.Add(new Vector2(x.idx, y.idx));
                     break;
                 case Tile.End:
                     tile = (GameObject) Instantiate(tileEnd, pos, Quaternion.identity);
+                    passable.Add(new Vector2(x.idx, y.idx));
                     break;
                 default:
                     continue;
@@ -62,6 +68,11 @@ public class BoardGenerator : MonoBehaviour {
 
             }
         }
+
+    }
+
+    public static bool IsPassable(Vector2 v) {
+        return passable.Contains(v);
     }
 
 }

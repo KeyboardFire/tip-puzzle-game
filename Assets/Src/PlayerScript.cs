@@ -79,8 +79,8 @@ public class PlayerScript : MonoBehaviour {
         case PieceType.Knight:
             return adx + ady == 3 && (adx == 1 || adx == 2);
         case PieceType.Pawn:
-            // TODO
-            return false;
+            return dx == 0 && (dy == 1 || dy == 2 &&
+                    BoardGenerator.IsPassable(new Vector2(pos.x, pos.y + 1)));
         case PieceType.Queen:
             // TODO
             return false;
