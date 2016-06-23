@@ -28,12 +28,23 @@ public class BoardGenerator : MonoBehaviour {
     }
 
     void Start() {
-        List<string> lines = File.ReadAllLines("Assets/Levels/level0.txt").ToList();
+        LoadLevel("level0");
+    }
+
+    void LoadLevel(string filename) {
+        List<string> lines =
+            File.ReadAllLines("Assets/Levels/" + filename + ".txt").ToList();
+
+        playerScript.movesLeft = new int[7];
         foreach (char ch in lines[0]) {
             ++playerScript.movesLeft[PlayerScript.pieceChars.IndexOf(ch)];
         }
         canvasScript.RedrawNumbers();
         lines.RemoveAt(0);
+
+        // remove existing tiles
+        List<Transform> children = transform.Cast<Transform>().ToList();
+        children.ForEach(child => Destroy(child.gameObject));
 
         // read the level file and turn it into Tile objects
         var tiles =
@@ -79,10 +90,10 @@ public class BoardGenerator : MonoBehaviour {
                 }
 
                 tile.GetComponent<TileBehavior>().SetPosition(x.idx, y.idx);
+                tile.transform.parent = transform;
 
             }
         }
-
     }
 
     public static bool IsPassable(Vector2 v) {

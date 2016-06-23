@@ -9,7 +9,13 @@ public class TileBehavior : MonoBehaviour {
     }
 
     void OnMouseDown() {
-        GameObject.Find("/Player").GetComponent<PlayerScript>().MoveTo(pos);
+        if (GameObject.Find("/Player").GetComponent<PlayerScript>().MoveTo(pos)) {
+            OnMoveSuccess();
+        }
+    }
+
+    protected virtual void OnMoveSuccess() {
+        // nop
     }
 
     public void SetPosition(int x, int y) {
