@@ -13,7 +13,7 @@ public class CanvasScript : MonoBehaviour {
     public GameObject queenPiece;
     public GameObject rookPiece;
 
-    void Start() {
+    void Awake() {
         playerScript = player.GetComponent<PlayerScript>();
     }
 

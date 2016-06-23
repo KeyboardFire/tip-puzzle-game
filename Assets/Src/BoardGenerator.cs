@@ -22,12 +22,12 @@ public class BoardGenerator : MonoBehaviour {
 
     static List<Vector2> passable = new List<Vector2>();
 
-    // called on initialization
-    void Start() {
-
+    void Awake() {
         playerScript = player.GetComponent<PlayerScript>();
         canvasScript = canvas.GetComponent<CanvasScript>();
+    }
 
+    void Start() {
         List<string> lines = File.ReadAllLines("Assets/Levels/level0.txt").ToList();
         foreach (char ch in lines[0]) {
             ++playerScript.movesLeft[PlayerScript.pieceChars.IndexOf(ch)];

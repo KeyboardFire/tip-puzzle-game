@@ -22,10 +22,11 @@ public class PlayerScript : MonoBehaviour {
     public GameObject canvas;
     CanvasScript canvasScript;
 
-    // called on initialization
-    void Start() {
+    void Awake() {
         canvasScript = canvas.GetComponent<CanvasScript>();
+    }
 
+    void Start() {
         ChangePiece(PieceType.Knight);
     }
 
