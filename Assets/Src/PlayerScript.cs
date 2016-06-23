@@ -5,6 +5,7 @@ public class PlayerScript : MonoBehaviour {
     public enum PieceType {
         Bishop, King, Knight, Pawn, Queen, Rook
     }
+    public static string pieceChars = "BKNPQR";
 
     PieceType pieceType;
     public GameObject pieceBishop;
@@ -14,10 +15,17 @@ public class PlayerScript : MonoBehaviour {
     public GameObject pieceQueen;
     public GameObject pieceRook;
 
+    public int[] movesLeft = new int[7];
+
     Vector2 pos = new Vector2(0, 0);
+
+    public GameObject canvas;
+    public CanvasScript canvasScript;
 
     // called on initialization
     void Start() {
+        canvasScript = canvas.GetComponent<CanvasScript>();
+
         ChangePiece(PieceType.Knight);
     }
 
@@ -52,6 +60,8 @@ public class PlayerScript : MonoBehaviour {
     public bool MoveTo(Vector2 movePos) {
         if (CanMove(movePos)) {
             ForceMove(movePos);
+            --movesLeft[(int)pieceType];
+            canvasScript.RedrawNumbers();
             return true;
         } else return false;
     }
@@ -65,6 +75,8 @@ public class PlayerScript : MonoBehaviour {
     }
 
     bool CanMove(Vector2 movePos) {
+        if (movesLeft[(int)pieceType] == 0) return false;
+
         int dx = Mathf.RoundToInt(movePos.x - pos.x),
             dy = Mathf.RoundToInt(movePos.y - pos.y);
         int adx = Mathf.Abs(dx), ady = Mathf.Abs(dy);

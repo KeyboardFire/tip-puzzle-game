@@ -15,15 +15,29 @@ public class BoardGenerator : MonoBehaviour {
     public Material lightSquareMat;
 
     public GameObject player;
+    PlayerScript playerScript;
+
+    public GameObject canvas;
+    CanvasScript canvasScript;
 
     static List<Vector2> passable = new List<Vector2>();
 
     // called on initialization
     void Start() {
 
+        playerScript = player.GetComponent<PlayerScript>();
+        canvasScript = canvas.GetComponent<CanvasScript>();
+
+        List<string> lines = File.ReadAllLines("Assets/Levels/level0.txt").ToList();
+        foreach (char ch in lines[0]) {
+            ++playerScript.movesLeft[PlayerScript.pieceChars.IndexOf(ch)];
+        }
+        canvasScript.RedrawNumbers();
+        lines.RemoveAt(0);
+
         // read the level file and turn it into Tile objects
         var tiles =
-            from line in File.ReadAllLines("Assets/Levels/level0.txt")
+            from line in lines
             select (
                     from ch in line
                     select
@@ -53,7 +67,7 @@ public class BoardGenerator : MonoBehaviour {
                     break;
                 case Tile.Start:
                     tile = (GameObject) Instantiate(tileStart, pos, Quaternion.identity);
-                    player.GetComponent<PlayerScript>().ForceMove(new Vector2(x.idx, y.idx));
+                    playerScript.ForceMove(new Vector2(x.idx, y.idx));
                     passable.Add(new Vector2(x.idx, y.idx));
                     break;
                 case Tile.End:
