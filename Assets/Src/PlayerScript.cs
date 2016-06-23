@@ -20,7 +20,7 @@ public class PlayerScript : MonoBehaviour {
     Vector2 pos = new Vector2(0, 0);
 
     public GameObject canvas;
-    public CanvasScript canvasScript;
+    CanvasScript canvasScript;
 
     // called on initialization
     void Start() {
