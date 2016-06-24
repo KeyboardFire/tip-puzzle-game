@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour {
 
@@ -16,6 +17,8 @@ public class Controller : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.P)) playerScript.ChangePiece(PlayerScript.PieceType.Pawn);
         if (Input.GetKeyDown(KeyCode.Q)) playerScript.ChangePiece(PlayerScript.PieceType.Queen);
         if (Input.GetKeyDown(KeyCode.R)) playerScript.ChangePiece(PlayerScript.PieceType.Rook);
+        if (Input.GetKeyDown(KeyCode.E)) SceneManager.LoadScene("MainScene");
+        if (Input.GetKeyDown(KeyCode.M)) SceneManager.LoadScene("MenuScene");
     }
 
 }
