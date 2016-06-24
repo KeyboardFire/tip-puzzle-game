@@ -20,7 +20,7 @@ public class BoardGenerator : MonoBehaviour {
     public GameObject canvas;
     CanvasScript canvasScript;
 
-    static List<Vector2> passable = new List<Vector2>();
+    readonly static List<Vector2> passable = new List<Vector2>();
 
     void Awake() {
         playerScript = player.GetComponent<PlayerScript>();
@@ -66,7 +66,7 @@ public class BoardGenerator : MonoBehaviour {
                 // the tile being placed
                 GameObject tile;
                 // the position of the tile
-                Vector3 pos = new Vector3(x.idx, 0, y.idx);
+                var pos = new Vector3(x.idx, 0, y.idx);
 
                 switch (y.tile) {
                 case Tile.Square:
