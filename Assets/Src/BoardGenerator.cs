@@ -28,7 +28,7 @@ public class BoardGenerator : MonoBehaviour {
     }
 
     void Start() {
-        LoadLevel("level0");
+        LoadLevel(GlobalData.currentLevel);
     }
 
     void LoadLevel(string filename) {
