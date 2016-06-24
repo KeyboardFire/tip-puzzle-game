@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TileEndBehavior : TileBehavior {
 
     protected override void OnMoveSuccess() {
-        Debug.Log("WIN");
+        SceneManager.LoadScene("MenuScene");
     }
 
 }
