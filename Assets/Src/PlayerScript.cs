@@ -35,12 +35,24 @@ public class PlayerScript : MonoBehaviour {
 
         GameObject pieceObj;
         switch (piece) {
-        case PieceType.Bishop: pieceObj = (GameObject) Instantiate(pieceBishop, transform.position, transform.rotation); break;
-        case PieceType.King:   pieceObj = (GameObject) Instantiate(pieceKing, transform.position, transform.rotation);   break;
-        case PieceType.Knight: pieceObj = (GameObject) Instantiate(pieceKnight, transform.position, transform.rotation); break;
-        case PieceType.Pawn:   pieceObj = (GameObject) Instantiate(piecePawn, transform.position, transform.rotation);   break;
-        case PieceType.Queen:  pieceObj = (GameObject) Instantiate(pieceQueen, transform.position, transform.rotation);  break;
-        case PieceType.Rook:   pieceObj = (GameObject) Instantiate(pieceRook, transform.position, transform.rotation);   break;
+        case PieceType.Bishop:
+            pieceObj = (GameObject) Instantiate(pieceBishop, transform.position, transform.rotation);
+            break;
+        case PieceType.King:
+            pieceObj = (GameObject) Instantiate(pieceKing, transform.position, transform.rotation);
+            break;
+        case PieceType.Knight:
+            pieceObj = (GameObject) Instantiate(pieceKnight, transform.position, transform.rotation);
+            break;
+        case PieceType.Pawn:
+            pieceObj = (GameObject) Instantiate(piecePawn, transform.position, transform.rotation);
+            break;
+        case PieceType.Queen:
+            pieceObj = (GameObject) Instantiate(pieceQueen, transform.position, transform.rotation);
+            break;
+        case PieceType.Rook:
+            pieceObj = (GameObject) Instantiate(pieceRook, transform.position, transform.rotation);
+            break;
         default: return; // unreachable
         }
 
@@ -107,9 +119,15 @@ public class PlayerScript : MonoBehaviour {
             }
 
             // finally, check direction for bishop/rook and distance for king
-            if (pieceType == PieceType.Rook   && (dx != 0 && dy != 0)) return false;
-            if (pieceType == PieceType.Bishop && (dx == 0 || dy == 0)) return false;
-            if (pieceType == PieceType.King   && (adx > 1 || ady > 1)) return false;
+            if (pieceType == PieceType.Rook && (dx != 0 && dy != 0)) {
+                return false;
+            }
+            if (pieceType == PieceType.Bishop && (dx == 0 || dy == 0)) {
+                return false;
+            }
+            if (pieceType == PieceType.King && (adx > 1 || ady > 1)) {
+                return false;
+            }
 
             // all checks pass!
             return true;
