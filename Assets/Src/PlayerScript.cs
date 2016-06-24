@@ -26,10 +26,6 @@ public class PlayerScript : MonoBehaviour {
         canvasScript = canvas.GetComponent<CanvasScript>();
     }
 
-    void Start() {
-        ChangePiece(PieceType.Knight);
-    }
-
     public void ChangePiece(PieceType piece) {
         foreach (Transform child in transform) {
             Destroy(child.gameObject);

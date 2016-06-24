@@ -35,6 +35,8 @@ public class BoardGenerator : MonoBehaviour {
         List<string> lines =
             File.ReadAllLines("Assets/Levels/" + filename + ".txt").ToList();
 
+        playerScript.ChangePiece((PlayerScript.PieceType)
+                PlayerScript.pieceChars.IndexOf(lines[0][0]));
         playerScript.movesLeft = new int[7];
         foreach (char ch in lines[0]) {
             ++playerScript.movesLeft[PlayerScript.pieceChars.IndexOf(ch)];
