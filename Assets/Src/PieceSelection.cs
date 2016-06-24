@@ -9,8 +9,7 @@ public class PieceSelection : MonoBehaviour {
         playerScript = player.GetComponent<PlayerScript>();
     }
 
-    void OnMouseDown() {
-        Debug.Log("potato");
+    public void OnClick() {
         switch(gameObject.name) {
             case "king":
                 playerScript.ChangePiece(PlayerScript.PieceType.King);
