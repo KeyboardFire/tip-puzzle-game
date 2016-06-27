@@ -12,22 +12,22 @@ public class PieceSelection : MonoBehaviour {
     public void OnClick() {
         switch(gameObject.name) {
             case "king":
-                playerScript.ChangePiece(PlayerScript.PieceType.King);
+                playerScript.ChangePiece(Piece.Type.King);
                 break;
             case "queen":
-                playerScript.ChangePiece(PlayerScript.PieceType.Queen);
+                playerScript.ChangePiece(Piece.Type.Queen);
                 break;
             case "bishop":
-                playerScript.ChangePiece(PlayerScript.PieceType.Bishop);
+                playerScript.ChangePiece(Piece.Type.Bishop);
                 break;
             case "rook":
-                playerScript.ChangePiece(PlayerScript.PieceType.Rook);
+                playerScript.ChangePiece(Piece.Type.Rook);
                 break;
             case "knight":
-                playerScript.ChangePiece(PlayerScript.PieceType.Knight);
+                playerScript.ChangePiece(Piece.Type.Knight);
                 break;
             case "pawn":
-                playerScript.ChangePiece(PlayerScript.PieceType.Pawn);
+                playerScript.ChangePiece(Piece.Type.Pawn);
                 break;
         }
     }

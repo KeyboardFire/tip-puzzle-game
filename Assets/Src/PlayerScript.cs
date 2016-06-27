@@ -2,12 +2,7 @@
 
 public class PlayerScript : MonoBehaviour {
 
-    public enum PieceType {
-        Bishop, King, Knight, Pawn, Queen, Rook
-    }
-    public static string pieceChars = "BKNPQR";
-
-    PieceType pieceType;
+    Piece.Type pieceType;
     public GameObject pieceBishop;
     public GameObject pieceKing;
     public GameObject pieceKnight;
@@ -26,7 +21,7 @@ public class PlayerScript : MonoBehaviour {
         canvasScript = canvas.GetComponent<CanvasScript>();
     }
 
-    public void ChangePiece(PieceType piece) {
+    public void ChangePiece(Piece.Type piece) {
         foreach (Transform child in transform) {
             Destroy(child.gameObject);
         }
@@ -35,22 +30,22 @@ public class PlayerScript : MonoBehaviour {
 
         GameObject pieceObj;
         switch (piece) {
-        case PieceType.Bishop:
+        case Piece.Type.Bishop:
             pieceObj = (GameObject) Instantiate(pieceBishop, transform.position, transform.rotation);
             break;
-        case PieceType.King:
+        case Piece.Type.King:
             pieceObj = (GameObject) Instantiate(pieceKing, transform.position, transform.rotation);
             break;
-        case PieceType.Knight:
+        case Piece.Type.Knight:
             pieceObj = (GameObject) Instantiate(pieceKnight, transform.position, transform.rotation);
             break;
-        case PieceType.Pawn:
+        case Piece.Type.Pawn:
             pieceObj = (GameObject) Instantiate(piecePawn, transform.position, transform.rotation);
             break;
-        case PieceType.Queen:
+        case Piece.Type.Queen:
             pieceObj = (GameObject) Instantiate(pieceQueen, transform.position, transform.rotation);
             break;
-        case PieceType.Rook:
+        case Piece.Type.Rook:
             pieceObj = (GameObject) Instantiate(pieceRook, transform.position, transform.rotation);
             break;
         default: return; // unreachable
@@ -92,17 +87,17 @@ public class PlayerScript : MonoBehaviour {
 
         switch (pieceType) {
 
-        case PieceType.Knight:
+        case Piece.Type.Knight:
             return adx + ady == 3 && (adx == 1 || adx == 2);
 
-        case PieceType.Pawn:
+        case Piece.Type.Pawn:
             return dx == 0 && (dy == 1 || dy == 2 &&
                     BoardGenerator.IsPassable(new Vector2(pos.x, pos.y + 1)));
 
-        case PieceType.Queen:
-        case PieceType.Rook:
-        case PieceType.Bishop:
-        case PieceType.King:
+        case Piece.Type.Queen:
+        case Piece.Type.Rook:
+        case Piece.Type.Bishop:
+        case Piece.Type.King:
             // make sure we're actually moving in a straight line
             if (dx != 0 && dy != 0 && adx != ady) return false;
 
@@ -119,13 +114,13 @@ public class PlayerScript : MonoBehaviour {
             }
 
             // finally, check direction for bishop/rook and distance for king
-            if (pieceType == PieceType.Rook && (dx != 0 && dy != 0)) {
+            if (pieceType == Piece.Type.Rook && (dx != 0 && dy != 0)) {
                 return false;
             }
-            if (pieceType == PieceType.Bishop && (dx == 0 || dy == 0)) {
+            if (pieceType == Piece.Type.Bishop && (dx == 0 || dy == 0)) {
                 return false;
             }
-            if (pieceType == PieceType.King && (adx > 1 || ady > 1)) {
+            if (pieceType == Piece.Type.King && (adx > 1 || ady > 1)) {
                 return false;
             }
 

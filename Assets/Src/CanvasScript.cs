@@ -21,23 +21,23 @@ public class CanvasScript : MonoBehaviour {
         for (int i = 0; i < playerScript.movesLeft.Length; ++i) {
             GameObject updateObj;
 
-            switch ((PlayerScript.PieceType)i) {
-            case PlayerScript.PieceType.Bishop:
+            switch ((Piece.Type)i) {
+            case Piece.Type.Bishop:
                 updateObj = bishopPiece;
                 break;
-            case PlayerScript.PieceType.King:
+            case Piece.Type.King:
                 updateObj = kingPiece;
                 break;
-            case PlayerScript.PieceType.Knight:
+            case Piece.Type.Knight:
                 updateObj = knightPiece;
                 break;
-            case PlayerScript.PieceType.Pawn:
+            case Piece.Type.Pawn:
                 updateObj = pawnPiece;
                 break;
-            case PlayerScript.PieceType.Queen:
+            case Piece.Type.Queen:
                 updateObj = queenPiece;
                 break;
-            case PlayerScript.PieceType.Rook:
+            case Piece.Type.Rook:
                 updateObj = rookPiece;
                 break;
             default:
