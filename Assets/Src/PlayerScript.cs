@@ -62,7 +62,10 @@ public class PlayerScript : MonoBehaviour {
 
     // returns whether the move was successful
     public bool MoveTo(Vector2 movePos) {
-        if (CanMove(pieceType, pos, movePos)) {
+        if (CanMove(pieceType, pos, movePos) &&
+                BoardGenerator.enemies.TrueForAll((enemy) => {
+                    return !CanMove(enemy.pieceType, enemy.pos, movePos);
+                })) {
             ForceMove(movePos);
             --movesLeft[(int)pieceType];
             canvasScript.RedrawNumbers();

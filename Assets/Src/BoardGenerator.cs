@@ -32,9 +32,11 @@ public class BoardGenerator : MonoBehaviour {
 
     public struct Enemy {
         public GameObject gameObject;
+        public Piece.Type pieceType;
         public Vector2 pos;
-        public Enemy(GameObject gameObject, Vector2 pos) {
+        public Enemy(GameObject gameObject, Piece.Type pieceType, Vector2 pos) {
             this.gameObject = gameObject;
+            this.pieceType = pieceType;
             this.pos = pos;
         }
     }
@@ -131,24 +133,32 @@ public class BoardGenerator : MonoBehaviour {
 
                 if (isEnemy) {
                     GameObject pieceObj;
+                    Piece.Type pieceType;
+
                     switch (y.tile) {
                     case Tile.EnemyBishop:
                         pieceObj = (GameObject) Instantiate(pieceBishop, transform.position, transform.rotation);
+                        pieceType = Piece.Type.Bishop;
                         break;
                     case Tile.EnemyKing:
                         pieceObj = (GameObject) Instantiate(pieceKing, transform.position, transform.rotation);
+                        pieceType = Piece.Type.King;
                         break;
                     case Tile.EnemyKnight:
                         pieceObj = (GameObject) Instantiate(pieceKnight, transform.position, transform.rotation);
+                        pieceType = Piece.Type.Knight;
                         break;
                     case Tile.EnemyPawn:
                         pieceObj = (GameObject) Instantiate(piecePawn, transform.position, transform.rotation);
+                        pieceType = Piece.Type.Pawn;
                         break;
                     case Tile.EnemyQueen:
                         pieceObj = (GameObject) Instantiate(pieceQueen, transform.position, transform.rotation);
+                        pieceType = Piece.Type.Queen;
                         break;
                     case Tile.EnemyRook:
                         pieceObj = (GameObject) Instantiate(pieceRook, transform.position, transform.rotation);
+                        pieceType = Piece.Type.Rook;
                         break;
                     default: return; // unreachable
                     }
@@ -163,7 +173,7 @@ public class BoardGenerator : MonoBehaviour {
                         child.gameObject.GetComponent<Renderer>().material = enemyMat;
                     }
 
-                    enemies.Add(new Enemy(pieceObj, new Vector2(x.idx, y.idx)));
+                    enemies.Add(new Enemy(pieceObj, pieceType, new Vector2(x.idx, y.idx)));
                 }
 
             }
