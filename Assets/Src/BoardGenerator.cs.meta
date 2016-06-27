@@ -1,10 +1,17 @@
 fileFormatVersion: 2
 guid: c850383935a75479085bdd8397d92b1d
-timeCreated: 1466521872
+timeCreated: 1467045152
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - tileSquare: {instanceID: 0}
+  - tileStart: {instanceID: 0}
+  - tileEnd: {instanceID: 0}
+  - lightSquareMat: {instanceID: 0}
+  - player: {instanceID: 0}
+  - canvas: {instanceID: 0}
+  - asset: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

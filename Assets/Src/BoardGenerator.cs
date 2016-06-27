@@ -20,11 +20,15 @@ public class BoardGenerator : MonoBehaviour {
     public GameObject canvas;
     CanvasScript canvasScript;
 
+    public TextAsset asset;
+    string assetText;
+
     readonly static List<Vector2> passable = new List<Vector2>();
 
     void Awake() {
         playerScript = player.GetComponent<PlayerScript>();
         canvasScript = canvas.GetComponent<CanvasScript>();
+        Debug.Log(assetText);
     }
 
     void Start() {
@@ -32,8 +36,9 @@ public class BoardGenerator : MonoBehaviour {
     }
 
     void LoadLevel(string filename) {
+
         List<string> lines =
-            File.ReadAllLines("Assets/Levels/" + filename + ".txt").ToList();
+            assetText.Split("\n".ToCharArray()).ToList();
 
         playerScript.ChangePiece((PlayerScript.PieceType)
                 PlayerScript.pieceChars.IndexOf(lines[0][0]));
