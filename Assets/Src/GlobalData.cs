@@ -2,6 +2,6 @@
 
 public class GlobalData : MonoBehaviour {
 
-    public static string currentLevel;
+    public static TextAsset currentLevel;
 
 }

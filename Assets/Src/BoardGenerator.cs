@@ -28,13 +28,12 @@ public class BoardGenerator : MonoBehaviour {
     }
 
     void Start() {
-        TextAsset levelFile = (TextAsset) Resources.Load(GlobalData.currentLevel);
-        LoadLevel(levelFile);
+        LoadLevel();
     }
 
-    void LoadLevel(TextAsset levelFile) {
-
-        List<string> lines = levelFile.text.Split("\n".ToCharArray()).ToList();
+    void LoadLevel() {
+        List<string> lines = GlobalData.currentLevel.text
+            .Split("\n".ToCharArray()).ToList();
 
         playerScript.ChangePiece((PlayerScript.PieceType)
                 PlayerScript.pieceChars.IndexOf(lines[0][0]));
