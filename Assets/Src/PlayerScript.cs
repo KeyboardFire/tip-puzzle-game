@@ -62,7 +62,7 @@ public class PlayerScript : MonoBehaviour {
 
     // returns whether the move was successful
     public bool MoveTo(Vector2 movePos) {
-        if (CanMove(movePos)) {
+        if (CanMove(pieceType, pos, movePos)) {
             ForceMove(movePos);
             --movesLeft[(int)pieceType];
             canvasScript.RedrawNumbers();
@@ -84,21 +84,21 @@ public class PlayerScript : MonoBehaviour {
         });
     }
 
-    bool CanMove(Vector2 movePos) {
-        if (movesLeft[(int)pieceType] == 0) return false;
+    bool CanMove(Piece.Type movePieceType, Vector2 fromPos, Vector2 toPos) {
+        if (movesLeft[(int)movePieceType] == 0) return false;
 
-        int dx = Mathf.RoundToInt(movePos.x - pos.x),
-            dy = Mathf.RoundToInt(movePos.y - pos.y);
+        int dx = Mathf.RoundToInt(toPos.x - fromPos.x),
+            dy = Mathf.RoundToInt(toPos.y - fromPos.y);
         int adx = Mathf.Abs(dx), ady = Mathf.Abs(dy);
 
-        switch (pieceType) {
+        switch (movePieceType) {
 
         case Piece.Type.Knight:
             return adx + ady == 3 && (adx == 1 || adx == 2);
 
         case Piece.Type.Pawn:
             return dx == 0 && (dy == 1 || dy == 2 &&
-                    BoardGenerator.IsPassable(new Vector2(pos.x, pos.y + 1)));
+                    BoardGenerator.IsPassable(new Vector2(fromPos.x, fromPos.y + 1)));
 
         case Piece.Type.Queen:
         case Piece.Type.Rook:
@@ -108,25 +108,25 @@ public class PlayerScript : MonoBehaviour {
             if (dx != 0 && dy != 0 && adx != ady) return false;
 
             // now make sure there's nothing between the start and end squares
-            Vector2 testSquare = pos;
+            Vector2 testSquare = fromPos;
             while (true) {
                 testSquare.x += System.Math.Sign(dx);
                 testSquare.y += System.Math.Sign(dy);
 
                 // test is exclusive on both ends (this is why we inf. loop)
-                if (testSquare == movePos) break;
+                if (testSquare == toPos) break;
 
                 if (!BoardGenerator.IsPassable(testSquare)) return false;
             }
 
             // finally, check direction for bishop/rook and distance for king
-            if (pieceType == Piece.Type.Rook && (dx != 0 && dy != 0)) {
+            if (movePieceType == Piece.Type.Rook && (dx != 0 && dy != 0)) {
                 return false;
             }
-            if (pieceType == Piece.Type.Bishop && (dx == 0 || dy == 0)) {
+            if (movePieceType == Piece.Type.Bishop && (dx == 0 || dy == 0)) {
                 return false;
             }
-            if (pieceType == Piece.Type.King && (adx > 1 || ady > 1)) {
+            if (movePieceType == Piece.Type.King && (adx > 1 || ady > 1)) {
                 return false;
             }
 
