@@ -62,10 +62,13 @@ public class PlayerScript : MonoBehaviour {
 
     // returns whether the move was successful
     public bool MoveTo(Vector2 movePos) {
-        if (CanMove(pieceType, pos, movePos) &&
-                BoardGenerator.enemies.TrueForAll((enemy) => {
-                    return !CanMove(enemy.pieceType, enemy.pos, movePos);
-                })) {
+        if (CanMove(pieceType, pos, movePos,
+                    BoardGenerator.enemies.Exists((enemy) => {
+                        return enemy.pos == movePos;
+                    })) &&
+                    BoardGenerator.enemies.TrueForAll((enemy) => {
+                        return !CanMove(enemy.pieceType, enemy.pos, movePos, true);
+                    })) {
             ForceMove(movePos);
             --movesLeft[(int)pieceType];
             canvasScript.RedrawNumbers();
@@ -87,7 +90,8 @@ public class PlayerScript : MonoBehaviour {
         });
     }
 
-    bool CanMove(Piece.Type movePieceType, Vector2 fromPos, Vector2 toPos) {
+    bool CanMove(Piece.Type movePieceType, Vector2 fromPos, Vector2 toPos,
+            bool isCapture) {
         if (movesLeft[(int)movePieceType] == 0) return false;
 
         int dx = Mathf.RoundToInt(toPos.x - fromPos.x),
@@ -100,8 +104,13 @@ public class PlayerScript : MonoBehaviour {
             return adx + ady == 3 && (adx == 1 || adx == 2);
 
         case Piece.Type.Pawn:
-            return dx == 0 && (dy == 1 || dy == 2 &&
-                    BoardGenerator.IsPassable(new Vector2(fromPos.x, fromPos.y + 1)));
+            if (isCapture) {
+                return adx == 1 && dy == 1;
+            } else {
+                return dx == 0 && (dy == 1 || dy == 2 &&
+                        BoardGenerator.IsPassable(new Vector2(fromPos.x,
+                                fromPos.y + 1)));
+            }
 
         case Piece.Type.Queen:
         case Piece.Type.Rook:
