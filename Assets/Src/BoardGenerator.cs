@@ -181,7 +181,9 @@ public class BoardGenerator : MonoBehaviour {
     }
 
     public static bool IsPassable(Vector2 v) {
-        return passable.Contains(v);
+        return passable.Contains(v) && enemies.TrueForAll((enemy) => {
+            return enemy.pos != v;
+        });
     }
 
 }
