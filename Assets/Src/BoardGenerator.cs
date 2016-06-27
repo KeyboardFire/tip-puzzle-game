@@ -30,6 +30,16 @@ public class BoardGenerator : MonoBehaviour {
 
     public Material enemyMat;
 
+    public struct Enemy {
+        public GameObject gameObject;
+        public Vector2 pos;
+        public Enemy(GameObject gameObject, Vector2 pos) {
+            this.gameObject = gameObject;
+            this.pos = pos;
+        }
+    }
+    public readonly static List<Enemy> enemies = new List<Enemy>();
+
     readonly static List<Vector2> passable = new List<Vector2>();
 
     void Awake() {
@@ -152,6 +162,8 @@ public class BoardGenerator : MonoBehaviour {
                     foreach (Transform child in pieceObj.transform) {
                         child.gameObject.GetComponent<Renderer>().material = enemyMat;
                     }
+
+                    enemies.Add(new Enemy(pieceObj, new Vector2(x.idx, y.idx)));
                 }
 
             }

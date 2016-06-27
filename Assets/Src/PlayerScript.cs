@@ -76,6 +76,12 @@ public class PlayerScript : MonoBehaviour {
         oldPos.z = movePos.y;
         transform.position = oldPos;
         pos = movePos;
+        BoardGenerator.enemies.RemoveAll((enemy) => {
+            if (enemy.pos == pos) {
+                Destroy(enemy.gameObject);
+                return true;
+            } else return false;
+        });
     }
 
     bool CanMove(Vector2 movePos) {
