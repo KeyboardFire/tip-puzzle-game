@@ -68,7 +68,7 @@ public class PlayerScript : MonoBehaviour {
 
     // returns whether the move was successful
     public bool MoveTo(Vector2 movePos) {
-        if (CanMove(pieceType, pos, movePos,
+        if (_movesLeft[(int)pieceType] != 0 && CanMove(pieceType, pos, movePos,
             BoardGenerator.Enemies.Exists(enemy => enemy._pos == movePos)) &&
             BoardGenerator.Enemies.TrueForAll(enemy => !CanMove(enemy._pieceType,
             enemy._pos, movePos, true))) {
@@ -96,7 +96,6 @@ public class PlayerScript : MonoBehaviour {
 
     bool CanMove(Piece.Type movePieceType, Vector2 fromPos, Vector2 toPos,
             bool isCapture) {
-        if (_movesLeft[(int)movePieceType] == 0) return false;
         if (fromPos == toPos) return false;
 
         int dx = Mathf.RoundToInt(toPos.x - fromPos.x),
