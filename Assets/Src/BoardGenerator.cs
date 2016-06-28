@@ -34,9 +34,9 @@ public class BoardGenerator : MonoBehaviour {
         public Vector2 _pos;
         public Enemy(GameObject _gameObject, Piece.Type _pieceType,
                Vector2 _pos) {
-                  this._gameObject = _gameObject;
-                  this._pieceType = _pieceType;
-                  this._pos = _pos;
+          this._gameObject = _gameObject;
+          this._pieceType = _pieceType;
+          this._pos = _pos;
         }
     }
     public readonly static List<Enemy> Enemies = new List<Enemy>();
@@ -175,13 +175,16 @@ public class BoardGenerator : MonoBehaviour {
                     pieceObj.transform.localScale = _player.transform.localScale;
                     pieceObj.transform.position = tile.transform.position;
                     Bounds bounds = Util.ChildrenBounds(pieceObj.transform);
-                    pieceObj.transform.Translate(0, bounds.extents.y - bounds.center.y, 0);
+                    pieceObj.transform.Translate(0,
+                            bounds.extents.y - bounds.center.y, 0);
 
                     foreach (Transform child in pieceObj.transform) {
-                        child.gameObject.GetComponent<Renderer>().material = _enemyMat;
+                        var renderer = child.gameObject.GetComponent<Renderer>();
+                        renderer.material = _enemyMat;
                     }
 
-                    Enemies.Add(new Enemy(pieceObj, pieceType, new Vector2(x.idx, y.idx)));
+                    Enemies.Add(new Enemy(pieceObj, pieceType,
+                                new Vector2(x.idx, y.idx)));
                 }
 
             }
@@ -189,7 +192,8 @@ public class BoardGenerator : MonoBehaviour {
     }
 
     public static bool IsPassable(Vector2 v) {
-        return passable.Contains(v) && Enemies.TrueForAll(enemy => enemy._pos != v);
+        return passable.Contains(v) &&
+            Enemies.TrueForAll(enemy => enemy._pos != v);
     }
 
 }

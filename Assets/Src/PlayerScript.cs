@@ -33,27 +33,27 @@ public class PlayerScript : MonoBehaviour {
         case Piece.Type.Bishop:
             pieceObj = (GameObject) Instantiate(_pieceBishop,
                         transform.position, transform.rotation);
-                        break;
+            break;
         case Piece.Type.King:
             pieceObj = (GameObject) Instantiate(_pieceKing,
                         transform.position, transform.rotation);
-                        break;
+            break;
         case Piece.Type.Knight:
             pieceObj = (GameObject) Instantiate(_pieceKnight,
                         transform.position, transform.rotation);
-                        break;
+            break;
         case Piece.Type.Pawn:
             pieceObj = (GameObject) Instantiate(_piecePawn,
                         transform.position, transform.rotation);
-                        break;
+            break;
         case Piece.Type.Queen:
             pieceObj = (GameObject) Instantiate(_pieceQueen,
                         transform.position, transform.rotation);
-                        break;
+            break;
         case Piece.Type.Rook:
             pieceObj = (GameObject) Instantiate(_pieceRook,
                         transform.position, transform.rotation);
-                        break;
+            break;
         default: return; // unreachable
         }
 
@@ -68,15 +68,20 @@ public class PlayerScript : MonoBehaviour {
 
     // returns whether the move was successful
     public bool MoveTo(Vector2 movePos) {
-        if (_movesLeft[(int)pieceType] != 0 && CanMove(pieceType, pos, movePos,
-            BoardGenerator.Enemies.Exists(enemy => enemy._pos == movePos)) &&
-            BoardGenerator.Enemies.TrueForAll(enemy => !CanMove(enemy._pieceType,
-            enemy._pos, movePos, true))) {
-                ForceMove(movePos);
-                --_movesLeft[(int)pieceType];
-                canvasScript.RedrawNumbers();
-                return true;
-            }
+        bool isCapture = BoardGenerator.Enemies.Exists(enemy =>
+                enemy._pos == movePos);
+
+        if (_movesLeft[(int)pieceType] != 0 &&
+                CanMove(pieceType, pos, movePos, isCapture) &&
+                BoardGenerator.Enemies.TrueForAll(enemy =>
+                    !CanMove(enemy._pieceType, enemy._pos, movePos, true))) {
+            // player is able to move to square
+            ForceMove(movePos);
+            --_movesLeft[(int)pieceType];
+            canvasScript.RedrawNumbers();
+            return true;
+        }
+
         return false;
     }
 
@@ -90,7 +95,8 @@ public class PlayerScript : MonoBehaviour {
             if (enemy._pos == pos) {
                 Destroy(enemy._gameObject);
                 return true;
-            } return false;
+            }
+            return false;
         });
     }
 
@@ -112,6 +118,7 @@ public class PlayerScript : MonoBehaviour {
             return dx == 0 && (dy == 1 || dy == 2 &&
                    BoardGenerator.IsPassable(new Vector2(fromPos.x,
                                                          fromPos.y + 1)));
+
         case Piece.Type.Queen:
         case Piece.Type.Rook:
         case Piece.Type.Bishop:

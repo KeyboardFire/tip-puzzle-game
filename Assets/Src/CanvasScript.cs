@@ -46,8 +46,10 @@ public class CanvasScript : MonoBehaviour {
             }
 
             int moves = playerScript._movesLeft[i];
-            updateObj.GetComponent<Image>().color = moves == 0 ? Color.black : Color.white;
-            updateObj.transform.GetComponentInChildren<Text>().text = moves.ToString();
+            updateObj.GetComponent<Image>().color =
+                moves == 0 ? Color.black : Color.white;
+            updateObj.transform.GetComponentInChildren<Text>().text =
+                moves.ToString();
         }
     }
 
