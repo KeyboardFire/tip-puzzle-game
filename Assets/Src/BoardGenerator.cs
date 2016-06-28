@@ -53,6 +53,8 @@ public class BoardGenerator : MonoBehaviour {
     }
 
     void LoadLevel() {
+        Enemies.Clear();
+
         List<string> lines = GlobalData._currentLevel.text
             .Split("\n".ToCharArray()).ToList();
 
