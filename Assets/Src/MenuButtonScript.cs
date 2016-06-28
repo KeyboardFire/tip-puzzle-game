@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class MenuButtonScript : MonoBehaviour {
 
     static Vector2 btnSize = new Vector2(200, 50);
+    const int btnSpacing = 10;
 
     public void Start() {
         // create menu buttons
@@ -17,6 +18,7 @@ public class MenuButtonScript : MonoBehaviour {
         buttonsLayout.spacing = btnSize.y;
         buttonsLayout.padding = new RectOffset((int)btnSize.y, (int)btnSize.y,
                 (int)btnSize.y, (int)btnSize.y);
+        buttonsLayout.childAlignment = TextAnchor.UpperCenter;
 
         int n = 0;
         foreach (Object levelFile in Resources.LoadAll("Levels")) {
@@ -34,7 +36,15 @@ public class MenuButtonScript : MonoBehaviour {
                 SceneManager.LoadScene("MainScene");
             });
 
-            var img = btnObj.AddComponent<Image>();
+            var imgObj = new GameObject();
+            imgObj.transform.parent = btnObj.transform;
+
+            var img = imgObj.AddComponent<Image>();
+
+            var imgRect = img.GetComponent<RectTransform>();
+            imgRect.sizeDelta = new Vector2(btnSize.x, btnSize.y - btnSpacing);
+            imgRect.localScale = Vector2.one;
+            imgRect.anchoredPosition = Vector2.zero;
 
             var txtObj = new GameObject();
             txtObj.transform.parent = btnObj.transform;
