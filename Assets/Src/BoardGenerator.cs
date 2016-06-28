@@ -32,10 +32,11 @@ public class BoardGenerator : MonoBehaviour {
         public GameObject _gameObject;
         public Piece.Type _pieceType;
         public Vector2 _pos;
-        public Enemy(GameObject _gameObject, Piece.Type _pieceType, Vector2 _pos) {
-            this._gameObject = _gameObject;
-            this._pieceType = _pieceType;
-            this._pos = _pos;
+        public Enemy(GameObject _gameObject, Piece.Type _pieceType,
+               Vector2 _pos) {
+                  this._gameObject = _gameObject;
+                  this._pieceType = _pieceType;
+                  this._pos = _pos;
         }
     }
     public readonly static List<Enemy> Enemies = new List<Enemy>();
