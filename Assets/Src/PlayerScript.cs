@@ -3,22 +3,22 @@
 public class PlayerScript : MonoBehaviour {
 
     Piece.Type pieceType;
-    public GameObject pieceBishop;
-    public GameObject pieceKing;
-    public GameObject pieceKnight;
-    public GameObject piecePawn;
-    public GameObject pieceQueen;
-    public GameObject pieceRook;
+    public GameObject _pieceBishop;
+    public GameObject _pieceKing;
+    public GameObject _pieceKnight;
+    public GameObject _piecePawn;
+    public GameObject _pieceQueen;
+    public GameObject _pieceRook;
 
-    public int[] movesLeft = new int[7];
+    public int[] _movesLeft = new int[7];
 
     Vector2 pos = new Vector2(0, 0);
 
-    public GameObject canvas;
+    public GameObject _canvas;
     CanvasScript canvasScript;
 
     void Awake() {
-        canvasScript = canvas.GetComponent<CanvasScript>();
+        canvasScript = _canvas.GetComponent<CanvasScript>();
     }
 
     public void ChangePiece(Piece.Type piece) {
@@ -31,23 +31,29 @@ public class PlayerScript : MonoBehaviour {
         GameObject pieceObj;
         switch (piece) {
         case Piece.Type.Bishop:
-            pieceObj = (GameObject) Instantiate(pieceBishop, transform.position, transform.rotation);
-            break;
+            pieceObj = (GameObject) Instantiate(_pieceBishop,
+                        transform.position, transform.rotation);
+                        break;
         case Piece.Type.King:
-            pieceObj = (GameObject) Instantiate(pieceKing, transform.position, transform.rotation);
-            break;
+            pieceObj = (GameObject) Instantiate(_pieceKing,
+                        transform.position, transform.rotation);
+                        break;
         case Piece.Type.Knight:
-            pieceObj = (GameObject) Instantiate(pieceKnight, transform.position, transform.rotation);
-            break;
+            pieceObj = (GameObject) Instantiate(_pieceKnight,
+                        transform.position, transform.rotation);
+                        break;
         case Piece.Type.Pawn:
-            pieceObj = (GameObject) Instantiate(piecePawn, transform.position, transform.rotation);
-            break;
+            pieceObj = (GameObject) Instantiate(_piecePawn,
+                        transform.position, transform.rotation);
+                        break;
         case Piece.Type.Queen:
-            pieceObj = (GameObject) Instantiate(pieceQueen, transform.position, transform.rotation);
-            break;
+            pieceObj = (GameObject) Instantiate(_pieceQueen,
+                        transform.position, transform.rotation);
+                        break;
         case Piece.Type.Rook:
-            pieceObj = (GameObject) Instantiate(pieceRook, transform.position, transform.rotation);
-            break;
+            pieceObj = (GameObject) Instantiate(_pieceRook,
+                        transform.position, transform.rotation);
+                        break;
         default: return; // unreachable
         }
 
@@ -62,19 +68,16 @@ public class PlayerScript : MonoBehaviour {
 
     // returns whether the move was successful
     public bool MoveTo(Vector2 movePos) {
-        if (movesLeft[(int)pieceType] != 0 &&
-                CanMove(pieceType, pos, movePos,
-                    BoardGenerator.enemies.Exists((enemy) => {
-                        return enemy.pos == movePos;
-                    })) &&
-                    BoardGenerator.enemies.TrueForAll((enemy) => {
-                        return !CanMove(enemy.pieceType, enemy.pos, movePos, true);
-                    })) {
-            ForceMove(movePos);
-            --movesLeft[(int)pieceType];
-            canvasScript.RedrawNumbers();
-            return true;
-        } else return false;
+        if (CanMove(pieceType, pos, movePos,
+            BoardGenerator.Enemies.Exists(enemy => enemy._pos == movePos)) &&
+            BoardGenerator.Enemies.TrueForAll(enemy => !CanMove(enemy._pieceType,
+            enemy._pos, movePos, true))) {
+                ForceMove(movePos);
+                --_movesLeft[(int)pieceType];
+                canvasScript.RedrawNumbers();
+                return true;
+            }
+        return false;
     }
 
     public void ForceMove(Vector2 movePos) {
@@ -83,16 +86,17 @@ public class PlayerScript : MonoBehaviour {
         oldPos.z = movePos.y;
         transform.position = oldPos;
         pos = movePos;
-        BoardGenerator.enemies.RemoveAll((enemy) => {
-            if (enemy.pos == pos) {
-                Destroy(enemy.gameObject);
+        BoardGenerator.Enemies.RemoveAll(enemy => {
+            if (enemy._pos == pos) {
+                Destroy(enemy._gameObject);
                 return true;
-            } else return false;
+            } return false;
         });
     }
 
     bool CanMove(Piece.Type movePieceType, Vector2 fromPos, Vector2 toPos,
             bool isCapture) {
+        if (_movesLeft[(int)movePieceType] == 0) return false;
         if (fromPos == toPos) return false;
 
         int dx = Mathf.RoundToInt(toPos.x - fromPos.x),
@@ -105,14 +109,10 @@ public class PlayerScript : MonoBehaviour {
             return adx + ady == 3 && (adx == 1 || adx == 2);
 
         case Piece.Type.Pawn:
-            if (isCapture) {
-                return adx == 1 && dy == 1;
-            } else {
-                return dx == 0 && (dy == 1 || dy == 2 &&
-                        BoardGenerator.IsPassable(new Vector2(fromPos.x,
-                                fromPos.y + 1)));
-            }
-
+            if (isCapture) return adx == 1 && dy == 1;
+            return dx == 0 && (dy == 1 || dy == 2 &&
+                   BoardGenerator.IsPassable(new Vector2(fromPos.x,
+                                                         fromPos.y + 1)));
         case Piece.Type.Queen:
         case Piece.Type.Rook:
         case Piece.Type.Bishop:

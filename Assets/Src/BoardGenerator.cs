@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -9,44 +8,43 @@ public class BoardGenerator : MonoBehaviour {
         Empty, Square, EnemyPawn, EnemyKnight, EnemyBishop, EnemyRook,
         EnemyQueen, EnemyKing, Start, End, Unknown
     }
-    public GameObject tileSquare;
-    public GameObject tileStart;
-    public GameObject tileEnd;
+    public GameObject _tileSquare;
+    public GameObject _tileStart;
+    public GameObject _tileEnd;
 
-    public Material lightSquareMat;
+    public Material _lightSquareMat;
+    public Material _enemyMat;
 
-    public GameObject player;
+    public GameObject _player;
     PlayerScript playerScript;
 
-    public GameObject canvas;
+    public GameObject _canvas;
     CanvasScript canvasScript;
 
-    public GameObject pieceBishop;
-    public GameObject pieceKing;
-    public GameObject pieceKnight;
-    public GameObject piecePawn;
-    public GameObject pieceQueen;
-    public GameObject pieceRook;
-
-    public Material enemyMat;
+    public GameObject _pieceBishop;
+    public GameObject _pieceKing;
+    public GameObject _pieceKnight;
+    public GameObject _piecePawn;
+    public GameObject _pieceQueen;
+    public GameObject _pieceRook;
 
     public struct Enemy {
-        public GameObject gameObject;
-        public Piece.Type pieceType;
-        public Vector2 pos;
-        public Enemy(GameObject gameObject, Piece.Type pieceType, Vector2 pos) {
-            this.gameObject = gameObject;
-            this.pieceType = pieceType;
-            this.pos = pos;
+        public GameObject _gameObject;
+        public Piece.Type _pieceType;
+        public Vector2 _pos;
+        public Enemy(GameObject _gameObject, Piece.Type _pieceType, Vector2 _pos) {
+            this._gameObject = _gameObject;
+            this._pieceType = _pieceType;
+            this._pos = _pos;
         }
     }
-    public readonly static List<Enemy> enemies = new List<Enemy>();
+    public readonly static List<Enemy> Enemies = new List<Enemy>();
 
     readonly static List<Vector2> passable = new List<Vector2>();
 
     void Awake() {
-        playerScript = player.GetComponent<PlayerScript>();
-        canvasScript = canvas.GetComponent<CanvasScript>();
+        playerScript = _player.GetComponent<PlayerScript>();
+        canvasScript = _canvas.GetComponent<CanvasScript>();
     }
 
     void Start() {
@@ -54,14 +52,14 @@ public class BoardGenerator : MonoBehaviour {
     }
 
     void LoadLevel() {
-        List<string> lines = GlobalData.currentLevel.text
+        List<string> lines = GlobalData._currentLevel.text
             .Split("\n".ToCharArray()).ToList();
 
         playerScript.ChangePiece((Piece.Type)
-                Piece.pieceChars.IndexOf(lines[0][0]));
-        playerScript.movesLeft = new int[7];
+                Piece._pieceChars.IndexOf(lines[0][0]));
+        playerScript._movesLeft = new int[7];
         foreach (char ch in lines[0]) {
-            ++playerScript.movesLeft[Piece.pieceChars.IndexOf(ch)];
+            ++playerScript._movesLeft[Piece._pieceChars.IndexOf(ch)];
         }
         canvasScript.RedrawNumbers();
         lines.RemoveAt(0);
@@ -108,20 +106,23 @@ public class BoardGenerator : MonoBehaviour {
                 case Tile.EnemyRook:
                 case Tile.EnemyQueen:
                 case Tile.EnemyKing:
-                    tile = (GameObject) Instantiate(tileSquare, pos, Quaternion.identity);
+                    tile = (GameObject) Instantiate(_tileSquare, pos,
+                            Quaternion.identity);
                     if ((x.idx + y.idx) % 2 == 0) {
-                        tile.GetComponent<Renderer>().material = lightSquareMat;
+                        tile.GetComponent<Renderer>().material = _lightSquareMat;
                     }
                     passable.Add(new Vector2(x.idx, y.idx));
                     isEnemy = y.tile != Tile.Square;
                     break;
                 case Tile.Start:
-                    tile = (GameObject) Instantiate(tileStart, pos, Quaternion.identity);
+                    tile = (GameObject) Instantiate(_tileStart, pos,
+                            Quaternion.identity);
                     playerScript.ForceMove(new Vector2(x.idx, y.idx));
                     passable.Add(new Vector2(x.idx, y.idx));
                     break;
                 case Tile.End:
-                    tile = (GameObject) Instantiate(tileEnd, pos, Quaternion.identity);
+                    tile = (GameObject) Instantiate(_tileEnd, pos,
+                            Quaternion.identity);
                     passable.Add(new Vector2(x.idx, y.idx));
                     break;
                 default:
@@ -137,43 +138,49 @@ public class BoardGenerator : MonoBehaviour {
 
                     switch (y.tile) {
                     case Tile.EnemyBishop:
-                        pieceObj = (GameObject) Instantiate(pieceBishop, transform.position, transform.rotation);
-                        pieceType = Piece.Type.Bishop;
+                        pieceObj = (GameObject) Instantiate(_pieceBishop,
+                                transform.position, transform.rotation);
+                                pieceType = Piece.Type.Bishop;
                         break;
                     case Tile.EnemyKing:
-                        pieceObj = (GameObject) Instantiate(pieceKing, transform.position, transform.rotation);
-                        pieceType = Piece.Type.King;
+                        pieceObj = (GameObject) Instantiate(_pieceKing,
+                                transform.position, transform.rotation);
+                                pieceType = Piece.Type.King;
                         break;
                     case Tile.EnemyKnight:
-                        pieceObj = (GameObject) Instantiate(pieceKnight, transform.position, transform.rotation);
-                        pieceType = Piece.Type.Knight;
+                        pieceObj = (GameObject) Instantiate(_pieceKnight,
+                                transform.position, transform.rotation);
+                                pieceType = Piece.Type.Knight;
                         break;
                     case Tile.EnemyPawn:
-                        pieceObj = (GameObject) Instantiate(piecePawn, transform.position, transform.rotation);
-                        pieceType = Piece.Type.Pawn;
+                        pieceObj = (GameObject) Instantiate(_piecePawn,
+                                transform.position, transform.rotation);
+                                pieceType = Piece.Type.Pawn;
                         break;
                     case Tile.EnemyQueen:
-                        pieceObj = (GameObject) Instantiate(pieceQueen, transform.position, transform.rotation);
-                        pieceType = Piece.Type.Queen;
+                        pieceObj = (GameObject) Instantiate(_pieceQueen,
+                                transform.position, transform.rotation);
+                                pieceType = Piece.Type.Queen;
                         break;
                     case Tile.EnemyRook:
-                        pieceObj = (GameObject) Instantiate(pieceRook, transform.position, transform.rotation);
-                        pieceType = Piece.Type.Rook;
+                        pieceObj = (GameObject) Instantiate(_pieceRook,
+                                transform.position, transform.rotation);
+                                pieceType = Piece.Type.Rook;
                         break;
                     default: return; // unreachable
                     }
 
                     pieceObj.transform.parent = transform;
-                    pieceObj.transform.localScale = player.transform.localScale;
+                    pieceObj.transform.localScale = _player.transform.localScale;
                     pieceObj.transform.position = tile.transform.position;
                     Bounds bounds = Util.ChildrenBounds(pieceObj.transform);
                     pieceObj.transform.Translate(0, bounds.extents.y - bounds.center.y, 0);
 
                     foreach (Transform child in pieceObj.transform) {
-                        child.gameObject.GetComponent<Renderer>().material = enemyMat;
+                        child.gameObject.GetComponent<Renderer>().material = _enemyMat;
                     }
 
-                    enemies.Add(new Enemy(pieceObj, pieceType, new Vector2(x.idx, y.idx)));
+                    Enemies.Add(new Enemy(pieceObj, pieceType, new Vector2(x.idx, y.idx)));
                 }
 
             }
@@ -181,9 +188,7 @@ public class BoardGenerator : MonoBehaviour {
     }
 
     public static bool IsPassable(Vector2 v) {
-        return passable.Contains(v) && enemies.TrueForAll((enemy) => {
-            return enemy.pos != v;
-        });
+        return passable.Contains(v) && Enemies.TrueForAll(enemy => enemy._pos != v);
     }
 
 }

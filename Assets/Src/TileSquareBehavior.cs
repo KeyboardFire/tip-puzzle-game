@@ -1,4 +1,1 @@
-﻿using UnityEngine;
-
-public class TileSquareBehavior : TileBehavior {
-}
+﻿public class TileSquareBehavior : TileBehavior {}

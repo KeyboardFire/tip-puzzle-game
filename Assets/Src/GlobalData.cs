@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-public class GlobalData : MonoBehaviour {
+public static class GlobalData {
 
-    public static TextAsset currentLevel;
+    public static TextAsset _currentLevel;
 
 }

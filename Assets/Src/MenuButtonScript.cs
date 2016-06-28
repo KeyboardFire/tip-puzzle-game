@@ -5,12 +5,12 @@ using UnityEngine.SceneManagement;
 public class MenuButtonScript : MonoBehaviour {
 
     static Vector2 btnSize = new Vector2(200, 50);
-    static int btnPadding = 10;
+    const int btnPadding = 10;
 
     public void Start() {
         int n = 0;
         foreach (Object levelFile in Resources.LoadAll("Levels")) {
-            TextAsset level = (TextAsset) levelFile;
+            var level = (TextAsset) levelFile;
 
             var btnObj = new GameObject();
             btnObj.transform.parent = transform;
@@ -24,7 +24,7 @@ public class MenuButtonScript : MonoBehaviour {
 
             var btn = btnObj.AddComponent<Button>();
             btn.onClick.AddListener(() => {
-                GlobalData.currentLevel = level;
+                GlobalData._currentLevel = level;
                 SceneManager.LoadScene("MainScene");
             });
 

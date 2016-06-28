@@ -2,11 +2,11 @@
 
 public class PieceSelection : MonoBehaviour {
 
-    public GameObject player;
+    public GameObject _player;
     PlayerScript playerScript;
 
     void Awake() {
-        playerScript = player.GetComponent<PlayerScript>();
+        playerScript = _player.GetComponent<PlayerScript>();
     }
 
     public void OnClick() {
