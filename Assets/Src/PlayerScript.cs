@@ -76,7 +76,10 @@ public class PlayerScript : MonoBehaviour {
                 BoardGenerator.Enemies.TrueForAll(enemy =>
                     !CanMove(enemy._pieceType, enemy._pos, movePos, true))) {
             // player is able to move to square
-            ForceMove(movePos);
+            Piece.Type? capturedPiece = ForceMove(movePos);
+            if (capturedPiece.HasValue) {
+                ++_movesLeft[(int)capturedPiece.Value];
+            }
             --_movesLeft[(int)pieceType];
             canvasScript.RedrawNumbers();
             return true;
@@ -85,7 +88,8 @@ public class PlayerScript : MonoBehaviour {
         return false;
     }
 
-    public void ForceMove(Vector2 movePos) {
+    public Piece.Type? ForceMove(Vector2 movePos) {
+        Piece.Type? capturedPiece = null;
         Vector3 oldPos = transform.position;
         oldPos.x = movePos.x;
         oldPos.z = movePos.y;
@@ -93,11 +97,13 @@ public class PlayerScript : MonoBehaviour {
         pos = movePos;
         BoardGenerator.Enemies.RemoveAll(enemy => {
             if (enemy._pos == pos) {
+                capturedPiece = enemy._pieceType;
                 Destroy(enemy._gameObject);
                 return true;
             }
             return false;
         });
+        return capturedPiece;
     }
 
     bool CanMove(Piece.Type movePieceType, Vector2 fromPos, Vector2 toPos,
