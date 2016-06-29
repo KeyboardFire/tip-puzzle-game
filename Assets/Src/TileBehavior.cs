@@ -4,8 +4,12 @@ public class TileBehavior : MonoBehaviour {
 
     Vector2 pos;
 
-    void OnMouseOver() {
-        // TODO outline or shade the square
+    void OnMouseEnter() {
+        transform.localScale = transform.localScale + new Vector3(0, 1, 0);
+    }
+
+    void OnMouseExit() {
+        transform.localScale = transform.localScale - new Vector3(0, 1, 0);
     }
 
     void OnMouseDown() {
