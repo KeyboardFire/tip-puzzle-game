@@ -37,4 +37,10 @@ public class Controller : MonoBehaviour {
         }
     }
 
+    public void Adjust(float xVal) {
+        var pos = transform.position;
+        pos.x = xVal;
+        transform.position = pos;
+    }
+
 }

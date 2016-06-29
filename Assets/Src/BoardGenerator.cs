@@ -21,6 +21,9 @@ public class BoardGenerator : MonoBehaviour {
     public GameObject _canvas;
     CanvasScript canvasScript;
 
+    public GameObject _camera;
+    Controller cameraScript;
+
     public GameObject _pieceBishop;
     public GameObject _pieceKing;
     public GameObject _pieceKnight;
@@ -46,6 +49,7 @@ public class BoardGenerator : MonoBehaviour {
     void Awake() {
         playerScript = _player.GetComponent<PlayerScript>();
         canvasScript = _canvas.GetComponent<CanvasScript>();
+        cameraScript = _camera.GetComponent<Controller>();
     }
 
     void Start() {
@@ -189,6 +193,8 @@ public class BoardGenerator : MonoBehaviour {
                 }
 
             }
+
+            cameraScript.Adjust((tiles.Count() / 2.0f) - 1);
         }
     }
 
