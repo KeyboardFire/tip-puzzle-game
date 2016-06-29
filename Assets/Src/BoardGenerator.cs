@@ -181,8 +181,8 @@ public class BoardGenerator : MonoBehaviour {
                             bounds.extents.y - bounds.center.y, 0);
 
                     foreach (Transform child in pieceObj.transform) {
-                        var renderer = child.gameObject.GetComponent<Renderer>();
-                        renderer.material = _enemyMat;
+                        var subpiece_renderer = child.gameObject.GetComponent<Renderer>();
+                        subpiece_renderer.material = _enemyMat;
                     }
 
                     Enemies.Add(new Enemy(pieceObj, pieceType,
