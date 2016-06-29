@@ -3,6 +3,7 @@
 public class PlayerScript : MonoBehaviour {
 
     Piece.Type pieceType;
+    public Piece.Type PieceType { get { return pieceType; } }
     public GameObject _pieceBishop;
     public GameObject _pieceKing;
     public GameObject _pieceKnight;
@@ -13,6 +14,7 @@ public class PlayerScript : MonoBehaviour {
     public int[] _movesLeft = new int[7];
 
     Vector2 pos = new Vector2(0, 0);
+    public Vector2 Pos { get { return pos; } }
 
     public GameObject _canvas;
     CanvasScript canvasScript;
@@ -106,8 +108,8 @@ public class PlayerScript : MonoBehaviour {
         return capturedPiece;
     }
 
-    bool CanMove(Piece.Type movePieceType, Vector2 fromPos, Vector2 toPos,
-            bool isCapture) {
+    public bool CanMove(Piece.Type movePieceType, Vector2 fromPos,
+            Vector2 toPos, bool isCapture) {
         if (fromPos == toPos) return false;
 
         int dx = Mathf.RoundToInt(toPos.x - fromPos.x),

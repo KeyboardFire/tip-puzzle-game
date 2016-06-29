@@ -2,18 +2,37 @@
 
 public class TileBehavior : MonoBehaviour {
 
+    GameObject player;
+    PlayerScript playerScript;
+
     Vector2 pos;
+    Vector3 oldScale;
+
+    void Start() {
+        player = GameObject.Find("/Player");
+        playerScript = player.GetComponent<PlayerScript>();
+        oldScale = transform.localScale;
+    }
 
     void OnMouseEnter() {
-        transform.localScale = transform.localScale + new Vector3(0, 1, 0);
+        bool isCapture = BoardGenerator.Enemies.Exists(enemy =>
+                enemy._pos == pos);
+        bool isNotAttacked = BoardGenerator.Enemies.TrueForAll(enemy =>
+                !playerScript.CanMove(enemy._pieceType, enemy._pos, pos, true));
+        if (playerScript._movesLeft[(int)playerScript.PieceType] != 0 &&
+                playerScript.CanMove(playerScript.PieceType, playerScript.Pos,
+                    pos, isCapture) && isNotAttacked) {
+            transform.localScale = transform.localScale + new Vector3(0, 0.5f, 0);
+        }
     }
 
     void OnMouseExit() {
-        transform.localScale = transform.localScale - new Vector3(0, 1, 0);
+        transform.localScale = oldScale;
     }
 
     void OnMouseDown() {
-        if (GameObject.Find("/Player").GetComponent<PlayerScript>().MoveTo(pos)) {
+        if (playerScript.GetComponent<PlayerScript>().MoveTo(pos)) {
+            transform.localScale = oldScale;
             OnMoveSuccess();
         }
     }
