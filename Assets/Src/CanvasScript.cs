@@ -12,6 +12,7 @@ public class CanvasScript : MonoBehaviour {
     public GameObject _pawnPiece;
     public GameObject _queenPiece;
     public GameObject _rookPiece;
+    public GameObject _switchesIcon;
 
     void Awake() {
         playerScript = _player.GetComponent<PlayerScript>();
@@ -51,6 +52,13 @@ public class CanvasScript : MonoBehaviour {
             updateObj.transform.GetComponentInChildren<Text>().text =
                 moves.ToString();
         }
+
+        int switches = playerScript._switchesLeft;
+        Debug.Log(switches);
+        _switchesIcon.GetComponent<Image>().color =
+            switches == 0 ? Color.black : Color.white;
+        _switchesIcon.transform.GetComponentInChildren<Text>().text =
+            switches.ToString();
     }
 
 }

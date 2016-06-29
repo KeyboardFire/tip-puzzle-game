@@ -62,11 +62,13 @@ public class BoardGenerator : MonoBehaviour {
         List<string> lines = GlobalData._currentLevel.text
             .Split("\n".ToCharArray()).ToList();
 
+        playerScript._switchesLeft = 1;
+        playerScript._movesLeft = new int[6];
         playerScript.ChangePiece((Piece.Type)
                 Piece._pieceChars.IndexOf(lines[0][0]));
-        playerScript._movesLeft = new int[7];
         foreach (char ch in lines[0]) {
-            ++playerScript._movesLeft[Piece._pieceChars.IndexOf(ch)];
+            if (ch == '*') ++playerScript._switchesLeft;
+            else ++playerScript._movesLeft[Piece._pieceChars.IndexOf(ch)];
         }
         canvasScript.RedrawNumbers();
         lines.RemoveAt(0);

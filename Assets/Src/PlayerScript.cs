@@ -11,7 +11,8 @@ public class PlayerScript : MonoBehaviour {
     public GameObject _pieceQueen;
     public GameObject _pieceRook;
 
-    public int[] _movesLeft = new int[7];
+    public int[] _movesLeft = new int[6];
+    public int _switchesLeft;
 
     Vector2 pos = new Vector2(0, 0);
     public Vector2 Pos { get { return pos; } }
@@ -24,6 +25,10 @@ public class PlayerScript : MonoBehaviour {
     }
 
     public void ChangePiece(Piece.Type piece) {
+        if (_switchesLeft == 0) return;
+        --_switchesLeft;
+        canvasScript.RedrawNumbers();
+
         foreach (Transform child in transform) {
             Destroy(child.gameObject);
         }
