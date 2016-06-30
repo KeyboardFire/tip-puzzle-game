@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerScript : MonoBehaviour {
 
@@ -20,15 +21,48 @@ public class PlayerScript : MonoBehaviour {
     public GameObject _canvas;
     CanvasScript canvasScript;
 
+    public GameObject _board;
+    BoardGenerator boardScript;
+
+    struct PlayerState {
+        public Piece.Type pieceType;
+        public int[] movesLeft;
+        public int switchesLeft;
+        public Vector2 pos;
+        public List<BoardGenerator.Enemy> enemies;
+        public PlayerState(Piece.Type pieceType, int[] movesLeft,
+                int switchesLeft, Vector2 pos, List<BoardGenerator.Enemy> enemies) {
+            this.pieceType = pieceType;
+            this.movesLeft = movesLeft;
+            this.switchesLeft = switchesLeft;
+            this.pos = pos;
+            this.enemies = enemies;
+        }
+    }
+    readonly Stack<PlayerState> moveStack = new Stack<PlayerState>();
+    void PushState() {
+        moveStack.Push(new PlayerState(pieceType, (int[]) _movesLeft.Clone(),
+            _switchesLeft, new Vector2(pos.x, pos.y),
+            new List<BoardGenerator.Enemy>(BoardGenerator.Enemies)));
+    }
+
     void Awake() {
         canvasScript = _canvas.GetComponent<CanvasScript>();
+        boardScript = _board.GetComponent<BoardGenerator>();
+        moveStack.Clear();
     }
 
     public void ChangePiece(Piece.Type piece) {
+        PushState();
+
         if (_switchesLeft == 0) return;
         --_switchesLeft;
         canvasScript.RedrawNumbers();
 
+        SetPiece(piece);
+    }
+
+    void SetPiece(Piece.Type piece) {
         foreach (Transform child in transform) {
             Destroy(child.gameObject);
         }
@@ -83,6 +117,7 @@ public class PlayerScript : MonoBehaviour {
                 BoardGenerator.Enemies.TrueForAll(enemy =>
                     !CanMove(enemy._pieceType, enemy._pos, movePos, true))) {
             // player is able to move to square
+            PushState();
             Piece.Type? capturedPiece = ForceMove(movePos);
             if (capturedPiece.HasValue) {
                 ++_movesLeft[(int)capturedPiece.Value];
@@ -168,6 +203,22 @@ public class PlayerScript : MonoBehaviour {
         }
 
         return false; //unreachable
+    }
+
+    public void UndoMove() {
+        if (moveStack.Count > 1) {
+            PlayerState ps = moveStack.Pop();
+            SetPiece(ps.pieceType);
+            _movesLeft = ps.movesLeft;
+            _switchesLeft = ps.switchesLeft;
+            pos = ps.pos;
+            ForceMove(pos);
+            boardScript.KillAllEnemies();
+            BoardGenerator.Enemies.Clear();
+            BoardGenerator.Enemies.AddRange(ps.enemies);
+            boardScript.RedrawEnemies();
+            canvasScript.RedrawNumbers();
+        }
     }
 
 }

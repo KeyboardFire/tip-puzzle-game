@@ -142,56 +142,31 @@ public class BoardGenerator : MonoBehaviour {
                 tile.transform.parent = transform;
 
                 if (isEnemy) {
-                    GameObject pieceObj;
                     Piece.Type pieceType;
 
                     switch (y.tile) {
                     case Tile.EnemyBishop:
-                        pieceObj = (GameObject) Instantiate(_pieceBishop,
-                                transform.position, transform.rotation);
-                                pieceType = Piece.Type.Bishop;
+                        pieceType = Piece.Type.Bishop;
                         break;
                     case Tile.EnemyKing:
-                        pieceObj = (GameObject) Instantiate(_pieceKing,
-                                transform.position, transform.rotation);
-                                pieceType = Piece.Type.King;
+                        pieceType = Piece.Type.King;
                         break;
                     case Tile.EnemyKnight:
-                        pieceObj = (GameObject) Instantiate(_pieceKnight,
-                                transform.position, transform.rotation);
-                                pieceType = Piece.Type.Knight;
+                        pieceType = Piece.Type.Knight;
                         break;
                     case Tile.EnemyPawn:
-                        pieceObj = (GameObject) Instantiate(_piecePawn,
-                                transform.position, transform.rotation);
-                                pieceType = Piece.Type.Pawn;
+                        pieceType = Piece.Type.Pawn;
                         break;
                     case Tile.EnemyQueen:
-                        pieceObj = (GameObject) Instantiate(_pieceQueen,
-                                transform.position, transform.rotation);
-                                pieceType = Piece.Type.Queen;
+                        pieceType = Piece.Type.Queen;
                         break;
                     case Tile.EnemyRook:
-                        pieceObj = (GameObject) Instantiate(_pieceRook,
-                                transform.position, transform.rotation);
-                                pieceType = Piece.Type.Rook;
+                        pieceType = Piece.Type.Rook;
                         break;
                     default: return; // unreachable
                     }
 
-                    pieceObj.transform.parent = transform;
-                    pieceObj.transform.localScale = _player.transform.localScale;
-                    pieceObj.transform.position = tile.transform.position;
-                    Bounds bounds = Util.ChildrenBounds(pieceObj.transform);
-                    pieceObj.transform.Translate(0,
-                            bounds.extents.y - bounds.center.y, 0);
-
-                    foreach (Transform child in pieceObj.transform) {
-                        child.gameObject.GetComponent<Renderer>().material = _enemyMat;
-                    }
-
-                    Enemies.Add(new Enemy(pieceObj, pieceType,
-                                new Vector2(x.idx, y.idx)));
+                    AddEnemy(pieceType, new Vector2(x.idx, y.idx));
                 }
 
             }
@@ -203,6 +178,69 @@ public class BoardGenerator : MonoBehaviour {
     public static bool IsPassable(Vector2 v) {
         return passable.Contains(v) &&
             Enemies.TrueForAll(enemy => enemy._pos != v);
+    }
+
+    public void KillAllEnemies() {
+        foreach (Enemy enemy in Enemies) {
+            Destroy(enemy._gameObject);
+        }
+        Enemies.Clear();
+    }
+
+    public void RedrawEnemies() {
+        foreach (Enemy enemy in Enemies) {
+            Destroy(enemy._gameObject);
+        }
+        var enemiesClone = new List<Enemy>(Enemies);
+        Enemies.Clear();
+        foreach (Enemy enemy in enemiesClone) {
+            AddEnemy(enemy._pieceType, enemy._pos);
+        }
+    }
+
+    void AddEnemy(Piece.Type piece, Vector2 pos) {
+        GameObject pieceObj;
+
+        switch (piece) {
+        case Piece.Type.Bishop:
+            pieceObj = (GameObject) Instantiate(_pieceBishop,
+                    transform.position, transform.rotation);
+            break;
+        case Piece.Type.King:
+            pieceObj = (GameObject) Instantiate(_pieceKing,
+                    transform.position, transform.rotation);
+            break;
+        case Piece.Type.Knight:
+            pieceObj = (GameObject) Instantiate(_pieceKnight,
+                    transform.position, transform.rotation);
+            break;
+        case Piece.Type.Pawn:
+            pieceObj = (GameObject) Instantiate(_piecePawn,
+                    transform.position, transform.rotation);
+            break;
+        case Piece.Type.Queen:
+            pieceObj = (GameObject) Instantiate(_pieceQueen,
+                    transform.position, transform.rotation);
+            break;
+        case Piece.Type.Rook:
+            pieceObj = (GameObject) Instantiate(_pieceRook,
+                    transform.position, transform.rotation);
+            break;
+        default: return; // unreachable
+        }
+
+        pieceObj.transform.parent = transform;
+        pieceObj.transform.localScale = _player.transform.localScale;
+        pieceObj.transform.position = new Vector3(pos.x, 0, pos.y);
+        Bounds bounds = Util.ChildrenBounds(pieceObj.transform);
+        pieceObj.transform.Translate(0,
+                bounds.extents.y - bounds.center.y, 0);
+
+        foreach (Transform child in pieceObj.transform) {
+            child.gameObject.GetComponent<Renderer>().material = _enemyMat;
+        }
+
+        Enemies.Add(new Enemy(pieceObj, piece, pos));
     }
 
 }

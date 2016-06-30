@@ -35,6 +35,9 @@ public class Controller : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.M)) {
             SceneManager.LoadScene("MenuScene");
         }
+        if (Input.GetKeyDown(KeyCode.U)) {
+            playerScript.UndoMove();
+        }
     }
 
     public void Adjust(float xVal) {
