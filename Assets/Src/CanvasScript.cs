@@ -54,7 +54,6 @@ public class CanvasScript : MonoBehaviour {
         }
 
         int switches = playerScript._switchesLeft;
-        Debug.Log(switches);
         _switchesIcon.GetComponent<Image>().color =
             switches == 0 ? Color.black : Color.white;
         _switchesIcon.transform.GetComponentInChildren<Text>().text =
