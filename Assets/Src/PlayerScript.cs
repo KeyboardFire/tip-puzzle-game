@@ -53,7 +53,6 @@ public class PlayerScript : MonoBehaviour {
     }
 
     public void ChangePiece(Piece.Type piece) {
-        if (pieceType == piece) return;
         PushState();
 
         if (_switchesLeft == 0) return;
